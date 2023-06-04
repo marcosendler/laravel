@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Follow;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -53,4 +54,13 @@ class User extends Authenticatable
     public function posts() {
         return $this->hasmany(Post::class, 'user_id');
     }
+
+    public function userFollowers() {
+        return $this->hasmany(Follow::class, 'followeduser');
+    }
+
+    public function userFollowing() {
+        return $this->hasmany(Follow::class, 'user_id');
+    }
+
 }
