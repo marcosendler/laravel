@@ -24,8 +24,8 @@ Route::post('/login', [UserController::class, "login"])->middleware('guest');
 Route::post('/logout', [UserController::class, "logout"])->middleware('mustBeLoggedIn');
 
 Route::get('/admin-only', function() { return 'only admin';})->middleware('can:visitAdminPages');
-Route::get('/manage-avatar',  [UserController::class, 'showAvatarForm']);
-Route::post('/manage-avatar',  [UserController::class, 'storeAvatar']);
+Route::get('/manage-avatar',  [UserController::class, 'showAvatarForm'])->middleware('mustBeLoggedIn');
+Route::post('/manage-avatar',  [UserController::class, 'storeAvatar'])->middleware('mustBeLoggedIn');
 
 
 // blogpost related

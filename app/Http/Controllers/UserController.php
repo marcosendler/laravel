@@ -5,12 +5,32 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
     public function storeAvatar(Request $request) {
-        $request->file('avatar')->store('public/avatars');
-        return ;
+        $request->validate([
+            'avatar' => 'required|image|max:5000|'
+        ]);
+        
+        $user = auth()->user();
+
+        $fileName = $user->id . '-' . uniqid() . '.jpg';
+
+        $imgData = Image::make($request->file('avatar'))->fit(120)->encode('jpg');
+        Storage::put('public/avatars/'.$fileName, $imgData);
+
+        $oldAvatar = $user->avatar;
+
+        $user->avatar = $fileName;
+        $user->save();
+        
+        if($oldAvatar != "/storage/avatar/fallback-avatar.jpg") {
+            Storage::delete(str_replace("/storage/public/avatars/", "/storage/public/avatars/", $oldAvatar));
+        }
+        return back()->with('success', 'Avatar salvo com sucesso.');
     }
 
     public function showAvatarForm() {
@@ -61,6 +81,6 @@ class UserController extends Controller
 
     public function profile(User $user) {
 
-        return view('profile-posts', ['username' => $user->username, 'posts' => $user->posts()->get(), 'postCount' => $user->posts()->count()]);
+        return view('profile-posts', ['avatar' => $user->avatar,'username' => $user->username, 'posts' => $user->posts()->get(), 'postCount' => $user->posts()->count()]);
     }
 }
