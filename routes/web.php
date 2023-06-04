@@ -16,11 +16,15 @@ use App\Http\Controllers\UserController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 // user related
 Route::get('/',  [UserController::class, "showCorrectHomepage"])->name('login');
 Route::post('/register', [UserController::class, "register"])->middleware('guest');
 Route::post('/login', [UserController::class, "login"])->middleware('guest');
 Route::post('/logout', [UserController::class, "logout"])->middleware('mustBeLoggedIn');
+
+Route::get('/admin-only', function() { return 'only admin';})->middleware('can:visitAdminPages');
+
 
 
 // blogpost related
