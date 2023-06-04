@@ -8,12 +8,12 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    public function logout(){
+    public function logout() {
         auth()->logout();
         return redirect('/')->with('success', 'Deslogado com sucesso!');
     }
 
-    public function login(Request $request){
+    public function login(Request $request) {
         $incomingFields = $request->validate([
             'loginusername' => 'required',
             'loginpassword' => 'required'
@@ -28,7 +28,7 @@ class UserController extends Controller
 
     }
 
-    public function showCorrectHomepage()   {
+    public function showCorrectHomepage() {
         if(auth()->check()){
             return view('homepage-feed');
         } else {
@@ -50,5 +50,8 @@ class UserController extends Controller
         return redirect('/')->with('success', 'Registrado com sucesso!');
     }
 
-    
+    public function profile(User $user) {
+
+        return view('profile-posts', ['username' => $user->username, 'posts' => $user->posts()->get(), 'postCount' => $user->posts()->count()]);
+    }
 }
