@@ -8,6 +8,15 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+    public function storeAvatar(Request $request) {
+        $request->file('avatar')->store('public/avatars');
+        return ;
+    }
+
+    public function showAvatarForm() {
+        return view('avatar-form');
+    }
+
     public function logout() {
         auth()->logout();
         return redirect('/')->with('success', 'Deslogado com sucesso!');
