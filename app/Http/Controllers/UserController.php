@@ -8,6 +8,25 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+    public function logout(){
+        auth()->logout();
+        return redirect('/')->with('success', 'Deslogado com sucesso!');
+    }
+
+    public function login(Request $request){
+        $incomingFields = $request->validate([
+            'loginusername' => 'required',
+            'loginpassword' => 'required'
+        ]);
+
+        if(auth()->attempt(['username' => $incomingFields['loginusername'], 'password' => $incomingFields['loginpassword']])){
+            $request->session()->regenerate();
+            return redirect('/')->with('success', 'Logado com sucesso!');
+        }else{
+            return redirect('/')->with('failure', 'Falha no login!');
+        }
+
+    }
 
     public function showCorrectHomepage()   {
         if(auth()->check()){
@@ -26,22 +45,10 @@ class UserController extends Controller
 
         //$incomingFields['password'] = bcrypt($incomingFields['password']);
 
-        User::create($incomingFields);
-        return "hello from register function";
+        $user = User::create($incomingFields);
+        auth()->login($user);
+        return redirect('/')->with('success', 'Registrado com sucesso!');
     }
 
-    public function login(Request $request){
-        $incomingFields = $request->validate([
-            'loginusername' => 'required',
-            'loginpassword' => 'required'
-        ]);
-
-        if(auth()->attempt(['username' => $incomingFields['loginusername'], 'password' => $incomingFields['loginpassword']])){
-            $request->session()->regenerate();
-            return 'congrats';
-        }else{
-            return 'sorry';
-        }
-
-    }
+    
 }
