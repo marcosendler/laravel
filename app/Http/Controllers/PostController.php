@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
     public function viewSinglePost(Post $postagem){
+        $postagem['body'] = Str::markdown($postagem->body);
         return view('single-post', ['post' => $postagem]);
     }
 
@@ -30,4 +32,5 @@ class PostController extends Controller
 
         return redirect("/post/{$newPost->id}")->with('success', 'Post criado com sucesso!');
     }
+
 }
