@@ -8,9 +8,34 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function viewSinglePost(Post $postagem){
-        $postagem['body'] = Str::markdown($postagem->body);
-        return view('single-post', ['post' => $postagem]);
+    public function showEditForm(Post $post) {
+        return view('edit-post', ['post' => $post]);
+    }
+
+    public function actuallyUpdate(Post $post, Request $request) {
+        $incomingFields = $request->validate([
+            'title' => 'required',
+            'body' => 'required'
+        ]);
+
+        $incomingFields['title'] = strip_tags($incomingFields['title']);
+        $incomingFields['body'] = strip_tags($incomingFields['body']);
+
+        $post->update($incomingFields);
+        return back()->with('success', 'Atualizado com sucesso!');
+    }
+
+    public function delete(Post $post) {
+       
+        $post->delete();
+        return redirect('/profile/' . auth()->user()->username)->with('success', 'Post deletado com sucesso.');
+
+    }
+
+
+    public function viewSinglePost(Post $post){
+        $post['body'] = Str::markdown($post->body);
+        return view('single-post', ['post' => $post]);
     }
 
 
