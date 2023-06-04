@@ -8,6 +8,15 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+
+    public function showCorrectHomepage()   {
+        if(auth()->check()){
+            return view('homepage-feed');
+        } else {
+            return view('homepage');
+        }
+    }
+
     public function register(Request $request) {
         $incomingFields = $request->validate([
             'username' => ['required', 'min:6', 'max:20', Rule::unique('users', 'username')],
