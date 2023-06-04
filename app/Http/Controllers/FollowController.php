@@ -20,7 +20,6 @@ class FollowController extends Controller
 
         if ($existCheck) {
             return back()->with('failure', 'Voce ja segue este usuario');
-
         }
 
         $newFollow = new Follow;
@@ -32,5 +31,9 @@ class FollowController extends Controller
         
     }
 
-    public function removeFollow() {}
+    public function removeFollow(User $user) {
+        Follow::where([['user_id', '=', auth()->user()->id], ['followeduser', '=', $user->id]])->delete();
+
+        return back()->with('success', 'Voce deixou de seguir este usuario');
+    }
 }
