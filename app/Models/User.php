@@ -51,16 +51,16 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function followers() {
+        return $this->hasMany(Follow::class, 'followeduser');
+    }
+
+    public function followingTheseUsers() {
+        return $this->hasMany(Follow::class, 'user_id');
+    }
+
     public function posts() {
-        return $this->hasmany(Post::class, 'user_id');
-    }
-
-    public function userFollowers() {
-        return $this->hasmany(Follow::class, 'followeduser');
-    }
-
-    public function userFollowing() {
-        return $this->hasmany(Follow::class, 'user_id');
+        return $this->hasMany(Post::class, 'user_id');
     }
 
 }

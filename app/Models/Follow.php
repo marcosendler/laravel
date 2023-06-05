@@ -9,11 +9,12 @@ class Follow extends Model
 {
     use HasFactory;
 
-    public function userFollowing() {
+    public function userDoingTheFollowing() {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function userFollowed() {
+    public function userBeingFollowed() {
         return $this->belongsTo(User::class, 'followeduser');
     }
+
 }
