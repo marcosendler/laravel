@@ -36,6 +36,8 @@ Route::get('/post/{post}', [PostController::class, "viewSinglePost"]);
 Route::delete('/post/{post}', [PostController::class, 'delete'])->middleware('can:delete,post');
 Route::get('/post/{post}/edit', [PostController::class, 'showEditForm'])->middleware('can:update,post');
 Route::put('/post/{post}', [PostController::class, 'actuallyUpdate'])->middleware('can:update,post');
+// search
+Route::get('/search/{term}', [PostController::class, 'search']);
 
 // Profile related routes
 Route::get('/profile/{user:username}', [UserController::class, 'profile']);
@@ -45,3 +47,4 @@ Route::get('/profile/{user:username}/following', [UserController::class, 'profil
 //follow related
 Route::post('/create-follow/{user:username}', [FollowController::class, "createFollow"])->middleware('mustBeLoggedIn');
 Route::post('/remove-follow/{user:username}', [FollowController::class, "removeFollow"])->middleware('mustBeLoggedIn');
+
