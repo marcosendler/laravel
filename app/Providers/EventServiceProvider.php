@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Events\OurExampleEvent;
-use App\Events\OurExampleListener;
+use App\Listeners\OurExampleListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;

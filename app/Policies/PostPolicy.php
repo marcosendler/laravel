@@ -29,7 +29,7 @@ class PostPolicy
      */
     public function create(User $user): bool
     {
-        return $user->id === $post->user_id;
+        //
     }
 
     /**

@@ -13,8 +13,6 @@ class Post extends Model
 
     protected $fillable = ['title', 'body', 'user_id'];
 
-    protected $table = 'posts';
-
     public function toSearchableArray() {
         return [
             'title' => $this->title,
@@ -25,4 +23,5 @@ class Post extends Model
     public function user() {
         return $this->belongsTo(User::class, 'user_id');
     }
+
 }
